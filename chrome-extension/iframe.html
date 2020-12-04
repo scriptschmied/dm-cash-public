@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="./styles.css">
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@1&display=swap" rel="stylesheet">
+</head>
+<body>
+<script src="https://js.stripe.com/v3/"></script>
+<div class='flex flex-wrap width-100 height-100 white-bg' id="payment-form-container">
+  <span id="init-page" class="width-100">
+  <div class="height-10vh flex flex-wrap width-100">
+    <div class="width-100 small-padding-left flex main-space-between small-padding-right cross-center">
+      <div class="flex cross-center"><h2 class="italic">「」</h2><h2 class="italic small-margin-left">dm.cash</h2></div>
+      <button class="button long-button-padding" id="from-initpage-to-loginpage-button">Log In</button>
+    </div>
+  </div>
+
+  <div class="width-100 height-90vh card-bg flex flex-wrap large-padding-top">
+    <div class="width-100 flex flex-wrap small-padding-left">
+      <h1 class="width-100">Give and get money wherever you go online. Securely.</h1>
+      <div class="width-100">4channel | Twitter | Kohlchan | Reddit</div>
+    </div>
+    <div class="small-padding-left width-100"><button class="button long-button-padding black-bg bold" id="from-initpage-to-signuppage-button">3-Step Sign Up</button></div>
+  </div>
+</span>
+
+<span id="sign-up-page" class="width-100 display-none">
+  <div class="height-10vh flex flex-wrap width-100">
+    <div class="width-100 small-padding-left flex main-space-between small-padding-right cross-center">
+      <div class="flex cross-center"><h2 class="italic">「」</h2><h2 class="italic small-margin-left">dm.cash</h2></div>
+      <button class="button long-button-padding" id="from-signuppage-to-initpage-button">Back</button>
+    </div>
+  </div>
+
+  <div class="width-100 height-90vh flex main-space-between small-padding-right small-padding-bottom flex-wrap med-padding-top">
+    <form id="payment-form" class="width-90 flex flex-wrap">
+      <div class="width-100 flex flex-wrap small-padding-left">
+      <label>E-mail</label>
+      <input type="text" class="height-28px width-100 small-padding-left" id="email">
+      <label>Password</label>
+      <input type="text" class="height-28px width-100 small-padding-left" id="password">
+      </div>
+      <div class="width-100 small-padding-left">
+        <label for="card-element">
+        </label>
+        <div id="card-element">
+        </div>
+      </div>
+    </form>
+    <div class="big-unicode grey-box width-5 height-100 flex main-center cross-center pointer" id="from-signuppage-to-countrytermspage-button">🡪</div>
+  </div>
+</span>
+
+<span id="country-terms-page" class="width-100 display-none">
+  <div class="height-10 flex flex-wrap width-100">
+    <div class="width-100 small-padding-left flex main-space-between small-padding-right cross-center">
+      <div class="flex cross-center"><h2 class="italic">「」</h2><h2 class="italic small-margin-left">dm.cash</h2></div>
+      <button class="button long-button-padding" id="from-countrytermspage-to-signuppage-button">Back</button>
+    </div>
+  </div>
+  <div class="small-padding-top small-padding-left flex flex-wrap">
+    <label class="width-100">Country of Residence</label>
+    <select id="countrySelect" name="countrySelect" class="width-90 height-30px"></select>
+  </div>
+  <form class="width-100 flex cross-center small-padding-top small-padding-left small-padding-right">
+    <input type="checkbox" id="dm-cash-terms-and-conditions-checkbox" value="accepted">
+    <div class="small-padding-left">
+      I certify that I have read and agreed to the <a target="_blank" href="https://www.dm.cash/terms-of-use">Terms & Conditions</a>.
+    </div>
+  </form>
+  <form class="width-100 flex cross-center small-padding-top small-padding-left small-padding-right">
+    <input type="checkbox" id="dm-cash-text-terms-and-conditions-checkbox" value="accepted">
+    <div class="small-padding-left">
+      I agree to opt-in to the DM.CASH SMS Messaging Service
+      and have agreed to the <a target="_blank" href="https://www.dm.cash/sms-messaging-terms">SMS Terms & Conditions</a>.
+    </div>
+  </form>
+  <div class="width-100 flex small-padding-left med-padding-top">
+  <button class="width-90 button white-bg solid-bordered long-button-padding" id="sign-up-submit-button">Submit</button>
+  </div>
+</span>
+
+<span id="error-popup" class="hard-width-100 display-none">
+  <div class="fixed-bottom-position hard-width-100 flex main-center">
+    <div class="width-100 light-red-bg flex main-space-between small-padding-left small-padding-top small-padding-right small-padding-bottom" id="error-container">
+      <div id="error-popup-message" class="width-80 flex flex-wrap"></div>
+      <div id="error-popup-exit" class="pointer">X</div>
+    </div>
+  </div>
+</span>
+
+<span id="log-in-page" class="width-100 display-none">
+  <div class="height-10vh flex flex-wrap width-100">
+    <div class="width-100 small-padding-left flex main-space-between small-padding-right cross-center">
+      <div class="flex cross-center"><h2 class="italic">「」</h2><h2 class="italic small-margin-left">dm.cash</h2></div>
+      <button class="button long-button-padding" id="from-loginpage-to-initpage-button">Back</button>
+    </div>
+  </div>
+
+  <div class="width-100 height-90vh flex flex-wrap large-padding-top">
+    <form id="log-in-form" class="width-100 flex flex-wrap">
+      <div class="width-100 flex flex-wrap small-padding-right small-padding-left">
+      <label>E-mail</label>
+      <input type="text" class="height-28px width-100 small-padding-left" id="email-for-login">
+      <label>Password</label>
+      <input type="text" class="height-28px width-100 small-padding-left" id="password-for-login">
+      </div>
+      <div class="width-100 small-padding-left small-padding-top cross-center small-padding-bottom flex main-space-between grey-text small-padding-right">
+        <button class="button white-bg long-button-padding solid-bordered" id="login-submit-button">Submit</button>
+          Forgot?
+      </div>
+    </form>
+  </div>
+</span>
+
+<span id="social-media-link-page" class="width-100 display-none">
+  <div class="height-10 flex flex-wrap width-100">
+    <div class="width-100 small-padding-left flex main-space-between small-padding-right cross-center">
+      <div class="flex cross-center"><h2 class="italic">「」</h2><h2 class="italic small-margin-left">dm.cash</h2></div>
+      <button class="button long-button-padding" id="from-socialmedialinkpage-to-stripeconnectpage-button">Next</button>
+      <button class="button long-button-padding display-none" id="from-socialmedialinkpage-to-homepage-button">Back</button>
+    </div>
+  </div>
+  <div class="height-90 width-100 small-padding-top small-padding-left small-padding-right">
+    <div class="width-100 flex flex-wrap small-padding-top">
+      <h1 class="width-100">Registered! Add your social media profiles to get paid through your posts.</h1>
+      <div class="width-100 small-padding-top">Add as many or as little as you like. You can always do this later.</div>
+        <div class="width-100 flex flex-wrap cross-center small-margin-top small-padding-top">
+          <div class="profile-link-button flex cross-center" id="from-socialmedialinkpage-to-chanlinkpage-button">4channel</div>
+          <div class="profile-link-button flex cross-center" id="from-socialmedialinkpage-to-redditlinkpage-button">Reddit</div>
+          <div class="profile-link-button flex cross-center" id="from-socialmedialinkpage-to-twitterlinkpage-button">Twitter</div>
+          <div class="profile-link-button flex cross-center small-margin-top" id="from-socialmedialinkpage-to-kohllinkpage-button">Kohlchan</div>
+        </div>
+    </div>
+  </div>
+</span>
+
+<span id="chan-link-page" class="width-100 display-none">
+  <div class="height-10vh flex flex-wrap width-100">
+    <div class="width-100 small-padding-left flex main-space-between small-padding-right cross-center">
+      <div class="flex cross-center"><h2 class="italic">「」</h2><h2 class="italic small-margin-left">dm.cash</h2></div>
+      <button class="button long-button-padding" id="from-chanlinkpage-to-socialmedialinkpage-button">Back</button>
+    </div>
+  </div>
+  <div class="width-100 height-90 med-padding-top">
+    <h1 class="small-padding-left width-100 small-padding-right">Don't do it for free. Get payments through your posts on 4channel.</h1>
+    <div class="width-100 small-padding-left flex flex-wrap">
+    <label class="width-100 small-margin-top">Enter Your Secure Tripcode — As It Appears on Posts</label>
+    <div class="width-100">
+    <input type="text" class="height-28px width-80" id="chan-secure-tripcode">
+    <div class="width-100 small-padding-top">
+    <button class="button small-margin-top white-bg solid-bordered long-button-padding width-60" id="chan-identity-submit-button">Submit</button>
+    </div>
+  </div>
+  </div>
+  </div>
+</span>
+
+<span id="reddit-link-page" class="width-100 display-none">
+  <div class="height-10vh flex flex-wrap width-100">
+    <div class="width-100 small-padding-left flex main-space-between small-padding-right cross-center">
+      <div class="flex cross-center"><h2 class="italic">「」</h2><h2 class="italic small-margin-left">dm.cash</h2></div>
+      <button class="button long-button-padding" id="from-redditlinkpage-to-socialmedialinkpage-button">Back</button>
+    </div>
+  </div>
+  <div class="width-100 height-90 med-padding-top">
+    <h1 class="small-padding-left width-100 small-padding-right">Upvoted with cash. Get payments through your posts on Reddit.</h1>
+    <div class="width-100 small-padding-left flex flex-wrap">
+    <label class="width-100 small-margin-top">Enter Your Username</label>
+    <div class="width-100">
+    <input type="text" class="height-28px width-80" id="reddit-uname">
+    <div class="width-100 small-padding-top">
+    <button class="button small-margin-top white-bg solid-bordered long-button-padding width-60" id="reddit-identity-submit-button">Submit</button>
+    </div>
+  </div>
+  </div>
+  </div>
+</span>
+
+<span id="kohl-link-page" class="width-100 display-none">
+  <div class="height-10vh flex flex-wrap width-100">
+    <div class="width-100 small-padding-left flex main-space-between small-padding-right cross-center">
+      <div class="flex cross-center"><h2 class="italic">「」</h2><h2 class="italic small-margin-left">dm.cash</h2></div>
+      <button class="button long-button-padding" id="from-kohllinkpage-to-socialmedialinkpage-button">Back</button>
+    </div>
+  </div>
+  <div class="width-100 height-90 med-padding-top">
+    <h1 class="small-padding-left width-100 small-padding-right">Kohle im Internet. Get payments through your posts on Kohlchan.</h1>
+    <div class="width-100 small-padding-left flex flex-wrap">
+    <label class="width-100 small-margin-top">Enter The 'Subject' You Wish To Post As — Must Begin With !!</label>
+    <div class="width-100">
+    <input type="text" class="height-28px width-80" id="kohl-handle">
+    <div class="width-100 small-padding-top">
+    <button class="button small-margin-top white-bg solid-bordered long-button-padding width-60" id="kohl-identity-submit-button">Submit</button>
+    </div>
+  </div>
+  </div>
+  </div>
+</span>
+
+<span id="twitter-link-page" class="width-100 display-none">
+  <div class="height-10vh flex flex-wrap width-100">
+    <div class="width-100 small-padding-left flex main-space-between small-padding-right cross-center">
+      <div class="flex cross-center"><h2 class="italic">「」</h2><h2 class="italic small-margin-left">dm.cash</h2></div>
+      <button class="button long-button-padding" id="from-twitterlinkpage-to-socialmedialinkpage-button">Back</button>
+    </div>
+  </div>
+  <div class="width-100 height-90 med-padding-top">
+    <h1 class="small-padding-left width-100 small-padding-right">Slide into free cash. Get payments through your posts on Twitter.</h1>
+    <div class="width-100 small-padding-left flex flex-wrap">
+    <label class="width-100 small-margin-top">Enter Your Twitter Handle — No Need to Include The @</label>
+    <div class="width-100">
+    <input type="text" class="height-28px width-80" id="twitter-handle-identity-field">
+    <div class="width-100 small-padding-top">
+    <button class="button small-margin-top white-bg solid-bordered long-button-padding width-60" id="twitter-identity-submit-button">Submit</button>
+    </div>
+  </div>
+  </div>
+</div>
+</span>
+
+<span class="width-100 display-none" id="stripe-connect-page">
+  <div class="width-100 small-padding-left flex main-space-between small-padding-right cross-center">
+    <div class="flex cross-center"><h2 class="italic">「」</h2><h2 class="italic small-margin-left">dm.cash</h2></div>
+  </div>
+  <div class="height-90 width-100 small-padding-left small-padding-right">
+      <h1 class="width-100">Thanks! Just one more step.</h1>
+      <div class="width-100 small-padding-top">We partner with Stripe to make payments happen. A few
+      additional pieces of information are needed to ensure you are paid through your posts. Please click
+      the button below and follow through to finalize your account.
+      </div>
+      <div class="width-100 med-padding-top flex main-center">
+      <button class="button black-bg bold long-button-padding width-80" id="stripe-connect-register-button">Finalize Account</button>
+      </div>
+  </div>
+</span>
+
+<span class="width-100 display-none" id="home-page">
+  <div class="height-10 flex flex-wrap width-100">
+    <div class="width-100 small-padding-left flex main-space-between cross-center">
+      <h2 class="italic width-30">「」&nbsp;dm.cash</h2>
+      <div class="grey-bg width-70 height-100 flex">
+        <div class="height-100 width-25 flex main-center cross-center menu-button pointer" id="wallet-homepage-header-button">Wallet</div>
+        <div class="height-100 width-25 flex cross-center main-center menu-button pointer" id="tx-hist-homepage-header-button">Tx. Hist.</div>
+        <div class="height-100 width-25 flex cross-center main-center menu-button pointer" id="socialmedialinkpage-homepage-header-button">Soc. Accts.</div>
+        <div class="height-100 width-25 flex cross-center main-center menu-button pointer" id="profile-homepage-header-button">Profile</div>
+      </div>
+    </div>
+  </div>
+
+  <span class="width-100 display-none" id="wallet-page">
+    <div class="height-90 width-100 flex flex-wrap">
+    <div class="width-100"><h2 class="italic small-padding-left small-padding-top margin-0">Wallet</h2></div>
+    <div class="width-100 flex flex-wrap small-padding-left">
+      <div class="width-100 inline-display small-padding-top">
+        <div class="width-100">Active Card</div>
+      <div class="small-margin-top">
+        <div class="dropdown width-100 small-padding-right">
+          <div class="dropbtn width-60 flex" id="wallet-activecard">**** **** **** ####</div>
+            <div class="dropdown-content">
+            <a href="#" id="wallet-change-card-button">Change</a>
+          </div>
+        </div>
+      </div>
+      <div class="width-100 small-padding-top">Country</div>
+      <div class="small-padding-left" id="wallet-country">##</div>
+      <div class="width-100 small-padding-top">Currency</div>
+      <div class="small-padding-left" id="wallet-currency">###</div>
+    </form>
+    </div>
+    </div>
+  </div>
+</span>
+
+<span class="width-100 height-90 display-none" id="tx-hist-page">
+    <div class="width-100 height-90 flex-inline small-padding-top small-padding-left">
+    <div class="width-100 flex small-padding-top cross-center">
+    <h2 class="italic margin-0 small-padding-right">Tx. His.</h2>
+    <div class="width-60 flex small-padding-left small-padding-right">
+      <button class="button underline short-button-padding small-margin-right pointer" id="show-outgoing-tx-hist-page-button"><span class="underline" id="outgoing-tx-button-text">Outgoing</span></button>
+      <button class="button short-button-padding pointer small-margin-right" id="show-incoming-tx-hist-page-button">Incoming</button>
+      <button class="button short-button-padding pointer small-margin-right" id="show-payouts-button">Payouts</button>
+      <button class="button short-button-padding pointer" id="tx-history-next-button">Next</button>
+    </div>
+    </div>
+  <span class="width-100" id="outgoing-tx-hist-page">
+    <div class="small-padding-left width-100 small-padding-top display-none" id="outgoing-tx-hist-page-no-hist">Outgoing : None available.</div>
+  </span>
+  <span class="width-100 display-none" id="incoming-tx-hist-page">
+    <div class="small-padding-left width-100 small-padding-top display-none" id="incoming-tx-hist-page-no-hist">Incoming : None available.</div>
+  </span>
+</div>
+</span>
+
+<span class="width-100 display-none" id="profile-page">
+  <h2 class="italic width-100 small-padding-top small-padding-left">Profile</h2>
+  <div class="width-100 flex flex-wrap small-padding-left small-padding-bottom">
+  <div class="width-100">
+  <label class="small-padding-right">Change Password</label>
+  <button class="button short-button-padding pointer" id="init-password-change-button">Click Here</button>
+  </div>
+  <label class="width-100 small-margin-top">Change Card</label>
+  <div class="width-80">
+    <label for="card-element-for-changes">
+    </label>
+    <div id="card-element-for-changes">
+    </div>
+  </div>
+  <div class="width-100 small-margin-top">
+  <button class="button short-button-padding small-margin-right pointer" id="submit-card-change-button">Submit</button>
+  </div>
+  <label class="width-100 small-margin-top">Change Stripe Connect Acct. Information — Includes Phone #</label>
+  <button class="button short-button-padding small-margin-top small-margin-right pointer" id="change-connect-profile-button">Click Here</button>
+  </div>
+</span>
+</span>
+<div id="locked-page" class="width-100 height-100 display-none">
+    <div class="width-100 height-10vh med-padding-top small-padding-left flex main-space-between small-padding-right cross-center">
+      <div class="flex cross-center"><h2 class="italic">「」</h2><h2 class="italic small-margin-left">dm.cash</h2></div>
+      <button class="button long-button-padding" id="from-signuppage-to-initpage-button">Resend Code</button>
+    </div>
+  <div class="width-100 med-padding-top small-padding-left small-padding-right flex-wrap flex">
+    <h1 class="width-100">Your account has been locked.</h1>
+    <div class="width-100 small-padding-top">Enter the code we sent to your phone below, & your new password. Contact support at brandonburke.personal@gmail.com if you are unable to unlock your account.</div>
+    <form class="width-100 small-padding-left small-padding-top">
+      <div class="width-80 flex flex-wrap">
+      <label class="small-padding-right">Code</label>
+      <input type="text" class="height-14px width-40" id="phone-code">
+      </div>
+      <div class="width-80 flex flex-wrap small-padding-top">
+      <label class="small-padding-right">New Password</label>
+      <input type="text" class="height-14px width-40" id="new-pass">
+      </div>
+    </form>
+    <div class="width-100 small-padding-right flex main-flex-end">
+      <button id="submit-phonecode-and-newpass-button">Submit</button>
+    </div>
+  </div>
+</div>
+</body>
+<script src="./iframe.js"></script>
+</html>

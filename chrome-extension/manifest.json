@@ -1,0 +1,45 @@
+{
+  "manifest_version": 2,
+   "name": "dm-cash",
+   "version": "1.0",
+   "description": "Generate and send payments via link. Auto-accept payments on any web profile.",
+   "permissions": ["activeTab","tabs", "webNavigation", "background", "storage", "<all_urls>"],
+   "author" : "DM.CASH Development Team",
+   "background": {
+     "scripts": ["background.js"],
+     "persistent": false
+  },
+  "web_accessible_resources": [
+    "iframe.html",
+    "iframe.js",
+    "tdsecure.html",
+    "tdsecure.js",
+    "https://hooks.stripe.com"
+  ],
+   "browser_action": {
+     "default_icon": "resources/dollar.svg.png",
+     "default_title" : "dm-cash"
+   },
+   "content_scripts": [
+     {
+       "matches": ["https://*.twitter.com/*"],
+       "js": ["twitter.js"]
+     },
+     {
+       "matches": ["https://*.4channel.org/*"],
+       "js": ["4chan.js"]
+     },
+     {
+       "matches" : ["https://kohlchan.net/int/*"],
+       "js": ["kohlChan.js"]
+     },
+     {
+     "matches" : ["https://www.reddit.com/r/Libertarian/*"],
+     "js": ["reddit.js"]
+    }
+   ],
+   "icons" : {
+      "48" : "resources/dollar.svg.png"
+    },
+    "content_security_policy": "script-src 'self' https://js.stripe.com https://hooks.stripe.com; object-src 'self'; frame-src 'self' https://js.stripe.com https://hooks.stripe.com https://---"
+ }
