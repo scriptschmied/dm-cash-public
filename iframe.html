@@ -20,7 +20,7 @@
   <div class="width-100 height-90vh card-bg flex flex-wrap large-padding-top">
     <div class="width-100 flex flex-wrap small-padding-left">
       <h1 class="width-100">Give and get money wherever you go online. Securely.</h1>
-      <div class="width-100">4channel | Twitter | Kohlchan | Reddit</div>
+      <div class="width-100">4channel | Twitter | Reddit</div>
     </div>
     <div class="small-padding-left width-100"><button class="button long-button-padding black-bg bold" id="from-initpage-to-signuppage-button">3-Step Sign Up</button></div>
   </div>
@@ -40,7 +40,7 @@
       <label>E-mail</label>
       <input type="text" class="height-28px width-100 small-padding-left" id="email">
       <label>Password</label>
-      <input type="text" class="height-28px width-100 small-padding-left" id="password">
+      <input type="password" class="height-28px width-100 small-padding-left" id="password">
       </div>
       <div class="width-100 small-padding-left">
         <label for="card-element">
@@ -77,7 +77,7 @@
       and have agreed to the <a target="_blank" href="https://www.dm.cash/sms-messaging-terms">SMS Terms & Conditions</a>.
     </div>
   </form>
-  <div class="width-100 flex small-padding-left med-padding-top">
+  <div class="width-100 flex small-padding-left small-padding-top">
   <button class="width-90 button white-bg solid-bordered long-button-padding" id="sign-up-submit-button">Submit</button>
   </div>
 </span>
@@ -105,11 +105,11 @@
       <label>E-mail</label>
       <input type="text" class="height-28px width-100 small-padding-left" id="email-for-login">
       <label>Password</label>
-      <input type="text" class="height-28px width-100 small-padding-left" id="password-for-login">
+      <input type="password" class="height-28px width-100 small-padding-left" id="password-for-login">
       </div>
       <div class="width-100 small-padding-left small-padding-top cross-center small-padding-bottom flex main-space-between grey-text small-padding-right">
         <button class="button white-bg long-button-padding solid-bordered" id="login-submit-button">Submit</button>
-          Forgot?
+          Forgot? Problem? E-mail support@dm.cash today.
       </div>
     </form>
   </div>
@@ -131,7 +131,6 @@
           <div class="profile-link-button flex cross-center" id="from-socialmedialinkpage-to-chanlinkpage-button">4channel</div>
           <div class="profile-link-button flex cross-center" id="from-socialmedialinkpage-to-redditlinkpage-button">Reddit</div>
           <div class="profile-link-button flex cross-center" id="from-socialmedialinkpage-to-twitterlinkpage-button">Twitter</div>
-          <div class="profile-link-button flex cross-center small-margin-top" id="from-socialmedialinkpage-to-kohllinkpage-button">Kohlchan</div>
         </div>
     </div>
   </div>
@@ -173,27 +172,6 @@
     <input type="text" class="height-28px width-80" id="reddit-uname">
     <div class="width-100 small-padding-top">
     <button class="button small-margin-top white-bg solid-bordered long-button-padding width-60" id="reddit-identity-submit-button">Submit</button>
-    </div>
-  </div>
-  </div>
-  </div>
-</span>
-
-<span id="kohl-link-page" class="width-100 display-none">
-  <div class="height-10vh flex flex-wrap width-100">
-    <div class="width-100 small-padding-left flex main-space-between small-padding-right cross-center">
-      <div class="flex cross-center"><h2 class="italic">「」</h2><h2 class="italic small-margin-left">dm.cash</h2></div>
-      <button class="button long-button-padding" id="from-kohllinkpage-to-socialmedialinkpage-button">Back</button>
-    </div>
-  </div>
-  <div class="width-100 height-90 med-padding-top">
-    <h1 class="small-padding-left width-100 small-padding-right">Kohle im Internet. Get payments through your posts on Kohlchan.</h1>
-    <div class="width-100 small-padding-left flex flex-wrap">
-    <label class="width-100 small-margin-top">Enter The 'Subject' You Wish To Post As — Must Begin With !!</label>
-    <div class="width-100">
-    <input type="text" class="height-28px width-80" id="kohl-handle">
-    <div class="width-100 small-padding-top">
-    <button class="button small-margin-top white-bg solid-bordered long-button-padding width-60" id="kohl-identity-submit-button">Submit</button>
     </div>
   </div>
   </div>
@@ -277,11 +255,11 @@
 <span class="width-100 height-90 display-none" id="tx-hist-page">
     <div class="width-100 height-90 flex-inline small-padding-top small-padding-left">
     <div class="width-100 flex small-padding-top cross-center">
-    <h2 class="italic margin-0 small-padding-right">Tx. His.</h2>
-    <div class="width-60 flex small-padding-left small-padding-right">
-      <button class="button underline short-button-padding small-margin-right pointer" id="show-outgoing-tx-hist-page-button"><span class="underline" id="outgoing-tx-button-text">Outgoing</span></button>
-      <button class="button short-button-padding pointer small-margin-right" id="show-incoming-tx-hist-page-button">Incoming</button>
-      <button class="button short-button-padding pointer small-margin-right" id="show-payouts-button">Payouts</button>
+    <div class="width-100 flex small-padding-left small-padding-right main-space-between">
+      <h2 class="italic margin-0 small-padding-right">Tx. His.</h2>
+      <button class="button underline short-button-padding pointer" id="show-outgoing-tx-hist-page-button"><span class="underline" id="outgoing-tx-button-text">Outgoing</span></button>
+      <button class="button short-button-padding pointer" id="show-incoming-tx-hist-page-button">Incoming</button>
+      <button class="button short-button-padding pointer" id="show-payouts-button">Payouts</button>
       <button class="button short-button-padding pointer" id="tx-history-next-button">Next</button>
     </div>
     </div>
@@ -331,7 +309,7 @@
       </div>
       <div class="width-80 flex flex-wrap small-padding-top">
       <label class="small-padding-right">New Password</label>
-      <input type="text" class="height-14px width-40" id="new-pass">
+      <input type="password" class="height-14px width-40" id="new-pass">
       </div>
     </form>
     <div class="width-100 small-padding-right flex main-flex-end">

@@ -80,17 +80,13 @@ indexHtmlInsert.innerHTML = `
 var docBody = document.getElementsByTagName('body')
 var doc = document;
 
-console.log(docBody);
 
 var globalP = new Promise(function(resolve, reject){
     chrome.storage.local.get("loginToken", function(loginToken){
-      console.log('AA');
       if (loginToken.exp < (Date.now()/1000)){
-        console.log('D');
         reject();
       }
       if (!loginToken["loginToken"] || !loginToken["loginToken"]["customerId"]){
-        console.log('F');
         reject()
       }
       else {
@@ -114,16 +110,13 @@ var globalP = new Promise(function(resolve, reject){
   return result.json()
 })
 .then(function(json){
-  console.log(JSON.stringify(json))
   return new Promise(function(resolve,reject){chrome.storage.local.set({initState : json[0]["appState"]}, function(){
-    console.log(docBody,2);
     docBody[0].appendChild(indexHtmlInsert);
     resolve();
   })});
 })
 .catch(function(){
   return new Promise(function(resolve,reject){chrome.storage.local.set({initState : "login_needed"}, function(){
-    console.log(docBody,2);
     docBody[0].appendChild(indexHtmlInsert);
     resolve();
   })});
@@ -132,7 +125,6 @@ var globalP = new Promise(function(resolve, reject){
 
 var extensionOrigin = 'chrome-extension://' + chrome.runtime.id;
 var dmCashPanel = doc.getElementById("dm-cash-panel");
-console.log(dmCashPanel);
 if (!location.ancestorOrigins.contains(extensionOrigin)) {
     var iframeHtmlInsert = document.createElement('iframe');
     iframeHtmlInsert.src = chrome.runtime.getURL('iframe.html');

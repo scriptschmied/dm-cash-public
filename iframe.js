@@ -153,7 +153,11 @@ var cardChangeHandler = function(loginToken, cardToken){
     })
   })
   .then(function(resp){
+    showErrorPopup("Successful. Exit and re-enter session to see changes.")
     return
+  })
+  .catch(function(){
+    showErrorPopup("Error occurred.")
   })
 }
 
@@ -373,13 +377,19 @@ let setUpOutgoingTx = function(next){
       let month = date.getMonth() + 1;
       let day = date.getDate();
       let year = date.getYear() - 100;
-      let txHtmlInsert = document.createElement("span");
+      let txHtmlInsert = document.createElement("div");
       let buttonClass, buttonText
       if (entry["amount_refunded"] > 0){
         buttonClass = "", buttonText = "Refund_Success"
       }
       else {
         buttonClass = "refund-button", buttonText = "Refund"
+      }
+      if (entry["status"] === "failed"){
+        buttonClass = "", buttonText = "Failed_Payment"
+      }
+      if (entry["status"] === "pending"){
+        buttonClass = "", buttonText = "Pending_Payment"
       }
       txHtmlInsert.innerHTML = `
       <div class="small-padding-left width-100 flex main-space-between small-padding-top small-padding-right cross-center">
@@ -391,12 +401,15 @@ let setUpOutgoingTx = function(next){
       </div>
       `
       txHtmlInsert.classList.add("outgoingTxInsert");
+      txHtmlInsert.classList.add("width-100");
       outgoingTxHistPage.appendChild(txHtmlInsert);
 
     }
     let refundButtons = document.getElementsByClassName("refund-button");
+
     for (let button of refundButtons){
-      button.onclick = function(){
+      button.onclick = function(e){
+        e.preventDefault();
         getLoginToken()
         .then(function(loginToken){
           return fetch('https://prologos.cc/v1/customers/transactions/refunds', {
@@ -416,21 +429,20 @@ let setUpOutgoingTx = function(next){
         .then(function(text){
           if (text === "OK"){
             button.innerHTML = "Refund_Success";
-            showErrorPopup(`Notice : As stated in our terms & conditions, we do not permit
-            the automatic refund of transaction fees. If you believe fraudulent payments have been made on your account, or are losing more than
-            $USD 10 due to the witholding of transaction fees, please email our staff at support@dm.cash so that we may consider
+            showErrorPopup(`Notice : Partial refund successful. As stated in our terms & conditions, we do not auto-refund
+            transaction fees. If you believe fraudulent payments have been made on your account, or are losing more than
+            $USD 10 due to the exclusion of transaction fees, please email our staff at support@dm.cash so that we may consider
             refunding you in full.`)
             button.classList.remove("refund-button");
           }
           else {
-            showErrorPopup("Refund failed.")
+            showErrorPopup("Refund failed. Contact support@dm.cash if you have questions.")
           }
         })
         .catch(function(err){
-          showErrorPopup("Refund failed.")
+          showErrorPopup("Refund failed. Contact support@dm.cash if you have questions.")
         })
       }
-      return
     }
   })
   .then(function(){
@@ -630,7 +642,6 @@ changeConnectProfileButton.onclick = function(){
 // socialMediaLinkPage subpages
 let chanLinkPage = document.getElementById("chan-link-page");
 let twitterLinkPage = document.getElementById("twitter-link-page");
-let kohlLinkPage = document.getElementById("kohl-link-page");
 let redditLinkPage = document.getElementById("reddit-link-page");
 let stripeConnectPage = document.getElementById("stripe-connect-page");
 
@@ -655,17 +666,6 @@ fromSocialMediaLinkPageToTwitterLinkPageButton.onclick = function(){
 let fromTwitterLinkPageToSocialMediaLinkPageButton = document.getElementById("from-twitterlinkpage-to-socialmedialinkpage-button");
 fromTwitterLinkPageToSocialMediaLinkPageButton.onclick = function(){
   twitterLinkPage.style.display = "none";
-  socialMediaLinkPage.style.display = "block";
-}
-
-let fromSocialMediaLinkPageToKohlLinkPageButton = document.getElementById("from-socialmedialinkpage-to-kohllinkpage-button");
-fromSocialMediaLinkPageToKohlLinkPageButton.onclick = function(){
-  kohlLinkPage.style.display = "block";
-  socialMediaLinkPage.style.display = "none";
-}
-let fromKohlLinkPageToSocialMediaLinkPageButton = document.getElementById("from-kohllinkpage-to-socialmedialinkpage-button");
-fromKohlLinkPageToSocialMediaLinkPageButton.onclick = function(){
-  kohlLinkPage.style.display = "none";
   socialMediaLinkPage.style.display = "block";
 }
 
@@ -748,36 +748,6 @@ twitterIdentitySubmitButton.onclick = function(){
     fromSocialMediaLinkPageToTwitterLinkPageButton.style.backgroundColor = "#90ee90";
     fromSocialMediaLinkPageToTwitterLinkPageButton.innerHTML = "✓"
     twitterLinkPage.style.display = "none";
-    socialMediaLinkPage.style.display = "block";
-  })
-}
-
-let kohlHandleIdentityField = document.getElementById('kohl-handle');
-let kohlIdentitySubmitButton = document.getElementById('kohl-identity-submit-button');
-kohlIdentitySubmitButton.onclick = function(){
-  let handle = kohlHandleIdentityField.value;
-  getLoginToken()
-  .then(function(loginToken){
-    return fetch('https://prologos.cc/v1/customers/identities', {
-        method : 'POST',
-        headers : {
-          'Content-Type' : 'application/json'
-        },
-        body : JSON.stringify({
-          cust : loginToken["loginToken"]["customerId"],
-          tokenId : loginToken["loginToken"]["tokenId"],
-          platform : "kohlChan",
-          handle : handle
-        })
-    })
-  })
-  .then(function(value){
-    return
-  })
-  .then(function(){
-    fromSocialMediaLinkPageToKohlLinkPageButton.style.backgroundColor = "#90ee90";
-    fromSocialMediaLinkPageToKohlLinkPageButton.innerHTML = "✓"
-    kohlLinkPage.style.display = "none";
     socialMediaLinkPage.style.display = "block";
   })
 }
@@ -931,7 +901,7 @@ loginSubmitButton.onclick = function(e){
     })
   })
   .catch(function(err){
-    console.log(err);
+    return
   })
 }
 
