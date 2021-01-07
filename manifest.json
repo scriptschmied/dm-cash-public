@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
    "name": "dm-cash",
-   "version": "0.0.0.0.2",
+   "version": "0.0.0.2",
    "description": "Tip & get tipped on 4channel, Twitter, & Reddit.",
    "permissions": ["activeTab","tabs", "webNavigation", "background", "storage", "<all_urls>"],
    "author" : "DM.CASH Development Team",
